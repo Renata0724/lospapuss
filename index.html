@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PolkaSell: marketplace persona a persona.">
+  <title>PolkaSell | Compra y vende entre personas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="PolkaSell inicio"><span class="brand-mark">P</span> Polka<span>Sell</span></a>
+    <form class="search" id="searchForm">
+      <span aria-hidden="true">⌕</span>
+      <input id="searchInput" type="search" placeholder="¿Qué estás buscando?" aria-label="Buscar publicaciones">
+      <button type="submit">Buscar</button>
+    </form>
+    <div class="top-actions">
+      <button class="icon-button" id="favoritesFilter" title="Ver favoritos" aria-label="Ver favoritos">♡ <span>Favoritos</span></button>
+      <button class="primary-button" id="openCreate">＋ Publicar</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="side-heading">Explorar</div>
+      <button class="category active" data-category="Todas">✦ <span>Todas las categorías</span></button>
+      <button class="category" data-category="Ropa">♧ <span>Ropa y accesorios</span></button>
+      <button class="category" data-category="Tecnología">▣ <span>Tecnología</span></button>
+      <button class="category" data-category="Hogar">⌂ <span>Hogar</span></button>
+      <button class="category" data-category="Comida">♡ <span>Comida</span></button>
+      <button class="category" data-category="Servicios">✎ <span>Servicios</span></button>
+      <button class="category" data-category="Cursos">▤ <span>Cursos</span></button>
+      <button class="category" data-category="Digital">◎ <span>Productos digitales</span></button>
+      <div class="sidebar-card">
+        <div class="sidebar-icon">◇</div>
+        <strong>Compra con confianza</strong>
+        <p>Revisa las calificaciones y el historial del vendedor antes de concretar una compra.</p>
+      </div>
+    </aside>
+
+    <section class="content">
+      <section class="welcome">
+        <div>
+          <p class="eyebrow">EL MERCADO ENTRE PERSONAS</p>
+          <h1>Encuentra algo <span>especial.</span></h1>
+          <p>Compra, vende y conecta directamente con otras personas.</p>
+          <button class="light-button" id="welcomeCreate">Comenzar a vender <span>→</span></button>
+        </div>
+        <div class="welcome-art" aria-hidden="true">
+          <div class="art-circle circle-one"></div>
+          <div class="art-circle circle-two"></div>
+          <div class="art-card">✦<small>PolkaSell</small></div>
+          <div class="art-spark">✧</div>
+        </div>
+      </section>
+
+      <section class="section-head">
+        <div>
+          <p class="eyebrow">DESCUBRE</p>
+          <h2 id="listingHeading">Publicaciones recientes</h2>
+        </div>
+        <select id="sortSelect" aria-label="Ordenar publicaciones">
+          <option value="recent">Más recientes</option>
+          <option value="priceAsc">Precio: menor a mayor</option>
+          <option value="priceDesc">Precio: mayor a menor</option>
+        </select>
+      </section>
+
+      <div class="chips" id="quickCategories">
+        <button class="chip selected" data-category="Todas">Todo</button>
+        <button class="chip" data-category="Ropa">Ropa</button>
+        <button class="chip" data-category="Tecnología">Tecnología</button>
+        <button class="chip" data-category="Hogar">Hogar</button>
+        <button class="chip" data-category="Comida">Comida</button>
+        <button class="chip" data-category="Servicios">Servicios</button>
+        <button class="chip" data-category="Cursos">Cursos</button>
+        <button class="chip" data-category="Digital">Digital</button>
+      </div>
+
+      <div class="results-note" id="resultsNote"></div>
+      <section class="product-grid" id="productGrid" aria-live="polite"></section>
+      <div class="empty-state hidden" id="emptyState">
+        <div>⌕</div><h3>No encontramos publicaciones</h3>
+        <p>Prueba con otra búsqueda o selecciona una categoría diferente.</p>
+        <button class="outline-button" id="clearFilters">Limpiar filtros</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="#"><span class="brand-mark">P</span> Polka<span>Sell</span></a>
+    <p>Conectando personas, una publicación a la vez.</p>
+    <small>Prototipo académico · Los pagos se acuerdan directamente entre usuarios.</small>
+  </footer>
+
+  <!-- Modal para crear y editar publicaciones -->
+  <dialog id="listingDialog" class="modal">
+    <form id="listingForm" class="modal-content">
+      <div class="modal-header">
+        <div><p class="eyebrow">TU ESPACIO DE VENTA</p><h2 id="listingDialogTitle">Crear publicación</h2></div>
+        <button type="button" class="close-button" data-close="listingDialog" aria-label="Cerrar">×</button>
+      </div>
+      <input type="hidden" id="listingId">
+      <label>Título de la publicación<input id="title" maxlength="70" required placeholder="Ej. Tenis en excelente estado"></label>
+      <div class="form-row">
+        <label>Precio (MXN)<input id="price" type="number" min="0" step="0.01" required placeholder="0.00"></label>
+        <label>Categoría
+          <select id="category" required>
+            <option value="Ropa">Ropa y accesorios</option><option value="Tecnología">Tecnología</option>
+            <option value="Hogar">Hogar</option><option value="Comida">Comida</option>
+            <option value="Servicios">Servicios</option><option value="Cursos">Cursos</option>
+            <option value="Digital">Productos digitales</option>
+          </select>
+        </label>
+      </div>
+      <label>Tipo de publicación
+        <select id="kind"><option value="Físico">Producto físico</option><option value="Digital">Producto digital</option><option value="Servicio">Servicio</option></select>
+      </label>
+      <label>Descripción<textarea id="description" rows="3" maxlength="500" required placeholder="Describe tu producto o servicio..."></textarea></label>
+      <label>Imagen (URL opcional)<input id="imageUrl" type="url" placeholder="https://..."></label>
+      <label>Tu nombre de vendedor<input id="sellerName" maxlength="35" required value="Mi perfil"></label>
+      <div class="modal-actions"><button type="button" class="outline-button" data-close="listingDialog">Cancelar</button><button class="primary-button" type="submit">Guardar publicación</button></div>
+    </form>
+  </dialog>
+
+  <!-- Modal de perfil -->
+  <dialog id="profileDialog" class="modal">
+    <div class="modal-content">
+      <div class="modal-header"><div><p class="eyebrow">COMUNIDAD POLKASELL</p><h2>Perfil del vendedor</h2></div><button class="close-button" data-close="profileDialog" aria-label="Cerrar">×</button></div>
+      <div id="profileContent"></div>
+    </div>
+  </dialog>
+
+  <!-- Modal de subasta -->
+  <dialog id="auctionDialog" class="modal">
+    <form id="auctionForm" class="modal-content">
+      <div class="modal-header"><div><p class="eyebrow">VENTA POR TIEMPO LIMITADO</p><h2>Crear subasta</h2></div><button type="button" class="close-button" data-close="auctionDialog" aria-label="Cerrar">×</button></div>
+      <label>Nombre del artículo<input id="auctionTitle" required maxlength="70"></label>
+      <div class="form-row">
+        <label>Precio inicial (MXN)<input id="auctionPrice" type="number" min="1" required></label>
+        <label>Duración
+          <select id="auctionDuration"><option value="1">1 hora</option><option value="6">6 horas</option><option value="24" selected>24 horas</option><option value="72">3 días</option></select>
+        </label>
+      </div>
+      <label>Nombre del vendedor<input id="auctionSeller" required value="Mi perfil"></label>
+      <p class="form-help">En este prototipo las ofertas se simulan en el navegador. No representan una obligación de compra.</p>
+      <div class="modal-actions"><button type="button" class="outline-button" data-close="auctionDialog">Cancelar</button><button class="primary-button" type="submit">Crear subasta</button></div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
